@@ -123,7 +123,7 @@ const Todo: React.FC = () => {
       )}
 
       {todos.length > 0 && (
-        <table>
+        <table className="striped">
           <thead>
             <tr>
               <th>Id:</th>

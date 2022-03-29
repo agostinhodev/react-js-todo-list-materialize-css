@@ -11,7 +11,10 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, removeTodo }) => {
   return (
     <tr>
       <td>{todo.id}</td>
-      <td>{todo.done ? "Done" : "Pending"}</td>
+      <td>
+        {todo.done && <span className="badge blue white-text">Done</span>}
+        {!todo.done && <span className="badge red white-text">Pending</span>}
+      </td>
       <td>{todo.description.trim()}</td>
       <td>{moment(todo.date).format("DD/MM/YYYY")}</td>
       <td>
