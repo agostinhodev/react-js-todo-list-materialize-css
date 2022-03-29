@@ -4,6 +4,7 @@ import moment from "moment";
 import { Todo as TodoModel } from "../models/Todo";
 import { v4 as uuid } from "uuid";
 import TodoItem from "../components/TodoItem";
+import Swal from "sweetalert2";
 
 const Todo: React.FC = () => {
   const [todos, setTodos] = useState<Array<TodoModel>>([] as Array<TodoModel>);
@@ -43,11 +44,28 @@ const Todo: React.FC = () => {
   };
 
   const removeTodo = (id: string): void => {
-    if (window.confirm("Are you sure?")) {
-      let todosCopy = [...todos];
-      todosCopy = todosCopy.filter((item) => item.id !== id);
-      setTodos(todosCopy);
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let todosCopy = [...todos];
+        todosCopy = todosCopy.filter((item) => item.id !== id);
+        setTodos(todosCopy);
+
+        Swal.fire("Deleted!", "Your TODO has been deleted.", "success");
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire("Cancelled", "Your canceled the TODO delete :)", "error");
+      }
+    });
   };
 
   return (
